@@ -14,7 +14,7 @@ import Badge from "@material-ui/core/Badge";
 
 // Styles
 import { Wrapper, StyledButton } from "./App.style"
-import { AddShoppingCart } from "@material-ui/icons";
+
 
 // Types
 export type CartItemType = {
@@ -41,11 +41,38 @@ const App = () => {
     'products', getProducts);
 
   // Gives the total amount in the cart
-  const getTotalItems = (items : CartItemType[]) => items.reduce((ack: number, item) => ack + item.amount, 0)
+  const getTotalItems = (items: CartItemType[]) => items.reduce((ack: number, item) => ack + item.amount, 0)
 
-  const handleAddToCart = (clickedItem: CartItemType) => null;
+  // Adding Items to the Cart
+  const handleAddToCart = (clickedItem: CartItemType) => {
+    setCartItems(prev => {
+      // 1. Is the item already in the cart
+      const isItemInCart = prev.find(item => item.id === clickedItem.id)
+      if (isItemInCart) {
+        return prev.map(item => (
+          item.id === clickedItem.id ? { ...item, amount: item.amount + 1 } : item
+        ))
 
-  const handleRemoveFromCart = () => null;
+      }
+
+      // 2. Item added for the first time
+      return [...prev, { ...clickedItem, amount: 1 }]
+    })
+  }
+
+  const handleRemoveFromCart = (id: number) => {
+    setCartItems(prev => (
+      prev.reduce((ack, item) => {
+        if (item.id === id) {
+          if (item.amount === 1) return ack;
+          return [...ack, { ...item, amount: item.amount - 1 }]
+        } else {
+          return [...ack, item]
+        }
+
+      }, [] as CartItemType[])
+    ))
+  }
 
   if (isLoading) return <LinearProgress color="primary" />;
   if (error) return <div>Soemthing Went Wrong..</div>
@@ -57,10 +84,10 @@ const App = () => {
       <Wrapper>
         <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)} >
           <Cart
-           cartItems = {cartItems} 
-           addToCart ={handleAddToCart} 
-           removeFromCart ={handleRemoveFromCart}
-           />
+            cartItems={cartItems}
+            addToCart={handleAddToCart}
+            removeFromCart={handleRemoveFromCart}
+          />
         </Drawer>
 
         <StyledButton onClick={() => setCartOpen(true)}>
