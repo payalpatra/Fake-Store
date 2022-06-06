@@ -9,7 +9,7 @@ This is a simple project to learn the development setup in react with Typescript
 - [TypeScript](https://www.typescriptlang.org/)
 - [React.js](https://reactjs.org/)
 - [Material-UI](https://mui.com/)
-- [React-styled-components](https://styled-components.com/)
+- [Styled-components](https://styled-components.com/)
 - [Fake Store API](https://fakestoreapi.com/)
 
 
@@ -20,7 +20,7 @@ This is a simple project to learn the development setup in react with Typescript
 # Clone this repository
 $ https://github.com/payalpatra/Fake-Store.git
 
-# Go into the repository
+# Move to the root directory
 $ cd Fake-Store
 
 # Remove current origin repository
